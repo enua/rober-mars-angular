@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { exception } from 'console';
 import { isNaN } from 'lodash';
+import { logWarnings } from 'protractor/built/driverProviders';
 import { Rover } from '../models/electronics';
 import { World, Location } from '../models/places';
-import { moveRoverForward } from '../utils/utils';
+import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/utils';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,8 @@ export class AppComponent {
   width: number = 100;
 
   inputLocation: World = {
-    eight: 100,
-    width: 100,
+    eight: 10,
+    width: 10,
     orientation: '',
     location: {
       latitude: NaN,
@@ -38,16 +40,17 @@ export class AppComponent {
       coordinates: {
         latitude: this.inputLocation.location.latitude ? this.inputLocation.location.latitude : NaN,
         longitude: this.inputLocation.location.longitude ? this.inputLocation.location.longitude : NaN,
-      }
-    }
-  }
-
-  addOrientation(orientation: string): void {
+      },
+    },
+    warnings: []
   }
 
   orientation: 'N' | 'S' | 'E' | 'W' | '';
+  command: string = '';
+  isInSquare: boolean = true;
 
-  command: string;
+  addOrientation(orientation: string): void {
+  }
 
   checkCommand = (ev: KeyboardEvent): boolean => {
     // received: AALAARALA
@@ -73,124 +76,42 @@ export class AppComponent {
           latitude: this.rover.position.coordinates.latitude ? this.rover.position.coordinates.latitude : this.inputLocation.location.latitude,
           longitude: this.rover.position.coordinates.longitude ? this.rover.position.coordinates.longitude : this.inputLocation.location.longitude,
         }
-      }
+      },
+      warnings: [...this.rover.warnings],
     }
     //5. Move the rover
     this.moveRover(this.rover, this.command);
-    //this.rover = beforeMoved(location, pointer Afer moved)
+
+    //7. finished()
   }
 
   moveRover = (rover: Rover, command: string) => {
     if (this.validateRegex('asdasd', command) && this.command) {
       // check array letter
       const commandList: string[] = command.split('');
-      commandList.forEach(item => {
-        // change lat or long
-        switch(item) {
-          case 'A':
-            // N+S -> Y(latitude) | E/W -> X(longitude)asdasdsa
-            if (rover.position.pointer === 'N') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude + 1;
-              console.log(moveRoverForward(rover.position.pointer, rover.position.coordinates));
-              console.log('default', rover.position.coordinates)
+      console.log(commandList)
+      try {
+        commandList.forEach(item => {
 
+          switch(item) {
+            case 'A':
+              rover.position = moveRoverForward(rover.position);
               break;
-            }
-
-            if (rover.position.pointer === 'S') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude - 1;
+            default:
+              rover.position.pointer = getPointer(rover.position.pointer, item);
               break;
-            }
+          }
 
-            if (rover.position.pointer === 'E') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude + 1;
-              break;
-            }
+          // 6. Check if the rover should stop moving
+          if (checkPositionInSquare(rover, this.inputLocation)) {
+            rover.warnings.push(`(${rover.position.coordinates.longitude},(${rover.position.coordinates.latitude}) <--- Failed to execute on ${new Date()}`)
+            throw new Error('Rover, you are outside the limits!');
+          }
+        });
 
-            if (rover.position.pointer === 'W') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude - 1;
-              break;
-            }
-
-          case 'R':
-            //  N+S -> X(longitude) | E/W -> Y(latitude)
-            if (rover.position.pointer === 'N') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude + 1;
-              rover.position.pointer = 'E';
-              break;
-            }
-
-            if (rover.position.pointer === 'S') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude - 1;
-              rover.position.pointer = 'W';
-              break;
-            }
-
-            if (rover.position.pointer === 'E') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude + 1;
-              rover.position.pointer = 'S';
-              break;
-            }
-
-            if (rover.position.pointer === 'W') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude - 1;
-              rover.position.pointer = 'N';
-              break;
-            }
-
-          case 'L':
-            //  N+S -> X(longitude) | E/W -> Y(latitude)
-            if (rover.position.pointer === 'N') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude - 1;
-              rover.position.pointer = 'W';
-              break;
-            }
-
-            if (rover.position.pointer === 'S') {
-              rover.position.coordinates.longitude =
-              rover.position.coordinates.longitude + 1;
-              rover.position.pointer = 'E';
-              break;
-            }
-
-            if (rover.position.pointer === 'E') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude + 1;
-              rover.position.pointer = 'N';
-              break;
-            }
-
-            if (rover.position.pointer === 'W') {
-              rover.position.coordinates.latitude =
-              rover.position.coordinates.latitude - 1;
-              rover.position.pointer = 'S';
-              break;
-            }
-        }
-      });
-      console.log('moved?', rover.position.pointer, rover.position.coordinates)
-    }
-  }
-
-  beforeMoved = (
-    newLocation: Location,
-    newPointer: 'N' | 'S' | 'E' | 'W' | '',
-  ): Rover => {
-    return {
-      position: {
-        pointer: newPointer,
-        coordinates: {
-          ... newLocation
-        }
+      } catch (error) {
+        console.log(error);
+        this.isInSquare = false;
       }
     }
   }

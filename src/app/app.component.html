@@ -56,7 +56,9 @@
       [disabled]="allSettingsGo()"
       (click)="handleClick()"
     >START</button>
-    <pre>{{inputLocation | json}}</pre>
+    <pre>INPUT: {{ inputLocation | json }}</pre>
+    <pre>ROVER: {{ rover | json }}</pre>
+    <pre>InSquare?: {{ isInSquare | json }}</pre>
 
   </div>
 

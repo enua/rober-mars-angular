@@ -9,3 +9,5 @@ export interface Location {
   latitude: number;
   longitude: number;
 }
+
+export type Orientation =  'N' | 'S' | 'E' | 'W' | '';
