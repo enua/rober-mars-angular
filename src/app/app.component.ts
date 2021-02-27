@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { exception } from 'console';
-import { isNaN } from 'lodash';
-import { logWarnings } from 'protractor/built/driverProviders';
 import { Rover } from '../models/electronics';
 import { World, Location } from '../models/places';
-import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/utils';
+import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/position.utils';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +14,8 @@ export class AppComponent {
   width: number = 100;
 
   inputLocation: World = {
-    eight: 10,
-    width: 10,
+    eight: this.eight,
+    width: this.width,
     orientation: '',
     location: {
       latitude: NaN,
@@ -54,20 +51,17 @@ export class AppComponent {
 
   checkCommand = (ev: KeyboardEvent): boolean => {
     // received: AALAARALA
-    return this.validateRegex('myregex', this.command);
+    return this.validateRegex('[ALR]', this.command);
   }
 
   validateRegex(regex: string, text: string): boolean {
-    return true; //TODO:
+    const regexp = new RegExp(regex);
+    const check = regexp.test(text);
+    return check; //TODO:
   }
 
-  // TODO: click on form
   handleClick = () => {
-    // TODO: CHECK LIST
-    //1. world created?
-    //2. location?
-    //3. pointer? N, S...
-    //4. command? ALRLAALR
+    // TODO: VALIDATIONS
 
     this.rover = {
       position: {
@@ -80,13 +74,15 @@ export class AppComponent {
       warnings: [...this.rover.warnings],
     }
     //5. Move the rover
+
     this.moveRover(this.rover, this.command);
 
     //7. finished()
   }
 
   moveRover = (rover: Rover, command: string) => {
-    if (this.validateRegex('asdasd', command) && this.command) {
+    console.log('COMMAND ?');
+    if (this.validateRegex('[ALR]', command) && this.command) {
       // check array letter
       const commandList: string[] = command.split('');
       console.log(commandList)
@@ -105,7 +101,7 @@ export class AppComponent {
           // 6. Check if the rover should stop moving
           if (checkPositionInSquare(rover, this.inputLocation)) {
             rover.warnings.push(`(${rover.position.coordinates.longitude},(${rover.position.coordinates.latitude}) <--- Failed to execute on ${new Date()}`)
-            throw new Error('Rover, you are outside the limits!');
+            throw new Error('Rover, you are going too far!');
           }
         });
 
@@ -113,6 +109,8 @@ export class AppComponent {
         console.log(error);
         this.isInSquare = false;
       }
+    } else {
+      rover.warnings.push(`UnAuthorized command ${command} <--- Failed to execute on ${new Date()}`)
     }
   }
 
@@ -125,5 +123,4 @@ export class AppComponent {
   finished = (): string => {
     return 'True, N, (4,5)' // TODO:
   }
-
 }
