@@ -6,68 +6,100 @@
 
   </header>
 
-  <div class="card highlight-card card-small">
+  <div class="card">
 
-    <span>eigth</span>
-    <input
-      class="form-control"
-      type="number"
-      min=0
-      [(ngModel)]="inputLocation.eight"
-      placeholder="{{ eight }}"/>
-    <span>width</span>
-    <input
-      type="number"
-      min=0
-      [(ngModel)]="inputLocation.width"
-      placeholder="{{ width }}"/>
-    <span>command</span>
-    <input
-      type="text"
-      [(ngModel)]="command"
-      (keyup)="checkCommand($event)"
-      placeholder="Enter your command: AALAARALA"
-    />
-    <span>x</span>
-    <input
-      type="number"
-      min="0"
-      [(ngModel)]="inputLocation.location.latitude"
-      placeholder="latitude"/>
-    <span>y</span>
-    <input
-      type="number"
-      min="0"
-      [(ngModel)]="inputLocation.location.longitude"
-      placeholder="longitude"/>
-
-    <select [(ngModel)]="inputLocation.orientation">
-      <option
-        *ngFor="let orientation of orientationList"
-        [ngValue]="orientation.value"
-        (click)="addOrientation(orientation)"
-        >
-        {{ orientation.name }}
-      </option>
-    </select>
-    <button
-      class="btn btn-default"
-      type="button"
-      [disabled]="allSettingsGo()"
-      (click)="handleClick()"
-    >START</button>
-    <pre>INPUT: {{ inputLocation | json }}</pre>
-    <pre>ROVER: {{ rover | json }}</pre>
-    <pre>InSquare?: {{ isInSquare | json }}</pre>
-
+    <div class="form">
+      <div class="container">
+        <span>Eigth (<i>*</i>):</span>
+        <input
+          class="form-control"
+          type="number"
+          min=0
+          [(ngModel)]="inputLocation.eight"
+          placeholder="Mars square eight"/>
+        </div>
+      <div class="container">
+        <span>width (<i>*</i>):</span>
+        <input
+          class="form-control"
+          type="number"
+          min=0
+          [(ngModel)]="inputLocation.width"
+          placeholder="Mars square eight"/>
+      </div>
+    </div>
+    <div class="form">
+      <div class="container">
+        <span>Command (<i>*</i>):</span>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="command"
+          (keyup)="checkCommand($event)"
+          placeholder="Enter your command: AALAARALA"
+        />
+      </div>
+      <div class="container">
+        <span>Latitude (<i>*</i>):</span>
+        <input
+          class="form-control"
+          type="number"
+          min="0"
+          [(ngModel)]="inputLocation.location.latitude"
+          placeholder="Latitude"/>
+      </div>
+      <div class="container">
+        <span>Longitude (<i>*</i>):</span>
+        <input
+          class="form-control"
+          type="number"
+          min="0"
+          [(ngModel)]="inputLocation.location.longitude"
+          placeholder="Longitude"/>
+          </div>
+      <div class="container">
+        <span>Orientation (<i>*</i>):</span>
+        <select [(ngModel)]="inputLocation.orientation">
+          <option
+            *ngFor="let orientation of orientationList"
+            [ngValue]="orientation.value"
+            (click)="addOrientation(orientation)"
+            >
+            {{ orientation.name }}
+          </option>
+        </select>
+      </div>
+      <div class="container" *ngIf="isInvalid">
+        <div class="errors">
+         Error: please fill form values (<i>*</i>)
+        </div>
+      </div>
+      <button
+        class="btn btn-default"
+        type="button"
+        (click)="handleClick()"
+      >START</button>
+    </div>
+  </div>
+  <div class="clear">
+    <div>
+      <pre>INPUT: {{ inputLocation | json }}</pre>
+    </div>
+    <div>
+      <pre>ROVER: {{ rover | json }}</pre>
+    </div>
+    <div>
+      <pre>InSquare?: {{ isInSquare | json }}</pre>
+    </div>
+    <div>
+      <pre>Actualposition: {{ actualPosition | json }}</pre>
+    </div>
   </div>
 
   <!-- Footer -->
   <footer>
 
   </footer>
-
-
 
 </div>
 

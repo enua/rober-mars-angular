@@ -1,0 +1,79 @@
+/* forms */
+.card { width: 100%; }
+
+.form {
+  padding-left: 10px;
+  width: 100%;
+}
+
+.container {
+  padding: 0px 0px 10px 0px;
+  width: 60%;
+}
+
+.container span {
+  font-weight: 600;
+}
+
+.container span i {
+  color: red;
+}
+
+.form-control, select {
+  min-width: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #677b8b;
+  padding-left: 10px;
+  width: 100%;
+}
+
+.container > select {
+  width: 50%;
+}
+
+.clear {
+  clear: both;
+}
+
+button {
+  padding: 10px;
+  min-width: 200px;
+  border: 1px solid #333;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  color: #fff;
+  border-radius: 5px;
+}
+
+button:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+  cursor: pointer;
+}
+
+.errors {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  border-radius: 5px;
+  font-weight: 400;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.errors > i {
+  color: #333;
+}
+
+@media(max-width: 769px) {
+  .container {
+    width: 93%;
+    padding-right: 10px;
+  }
+
+  .container > select {
+    width: 100%;
+  }
+}
