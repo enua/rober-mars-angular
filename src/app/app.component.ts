@@ -21,7 +21,7 @@ export class AppComponent implements OnInit{
     {name: 'South', value: 'S'},
     {name: 'East',  value: 'E'},
     {name: 'West',  value: 'W'},
-  ];
+  ]
 
   // init rover values
    rover: Rover = {
@@ -33,17 +33,17 @@ export class AppComponent implements OnInit{
       },
     },
     warnings: []
-  };
+  }
 
   orientation: Orientation;
-  command = '';
+  command: string = '';
   isInSquare = true;
   isInvalid = false;
   actualPosition: string[] = [];
   regeExp = '^[\s\dALR]+$';
 
 
-  ngOnInit = (): void => {
+  ngOnInit() {
     this.locationForm = new FormGroup({
       height: new FormControl(10, Validators.required),
       width: new FormControl(10, Validators.required),
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit{
       latitude: new FormControl(5, Validators.required),
       longitude: new FormControl(5, Validators.required),
       orientation: new FormControl('N', Validators.required),
-    });
+    })
   }
 
   validateRegex(regex: string, text: string): boolean {
@@ -62,15 +62,17 @@ export class AppComponent implements OnInit{
 
   forbiddenCommands = (control: FormControl): {[s: string]: boolean} => {
     if (!this.validateRegex(this.regeExp, control.value)) {
-      /* object-literal-key-quotes */
-      return { regeExpisForbidden: true };
+      return { 'regeExpisForbidden': true };
     }
 
     return null;
   }
 
+
+
   handleClick = () => {
-    if (this.locationForm.valid) {
+    if(this.locationForm.valid) {
+
       this.inputLocation = {
         height: this.locationForm.get('height').value as number,
         width: this.locationForm.get('width').value as number,
@@ -87,17 +89,14 @@ export class AppComponent implements OnInit{
         position: {
           pointer: this.rover?.position.pointer ? this.rover.position.pointer : this.inputLocation.orientation,
           coordinates: {
-            latitude: this.rover?.position.coordinates.latitude ?
-              this.rover.position.coordinates.latitude :
-              this.inputLocation.location.latitude,
-            longitude: this.rover?.position.coordinates.longitude ?
-              this.rover.position.coordinates.longitude :
-              this.inputLocation.location.longitude,
+            latitude: this.rover?.position.coordinates.latitude ? this.rover.position.coordinates.latitude : this.inputLocation.location.latitude,
+            longitude: this.rover?.position.coordinates.longitude ? this.rover.position.coordinates.longitude : this.inputLocation.location.longitude,
           }
         },
         warnings: [...this.rover?.warnings],
-      };
+      }
 
+      //5. Move the rover
       this.moveRover(this.rover, this.command);
 
       this.finished(this.rover, this.isInSquare);
@@ -109,7 +108,7 @@ export class AppComponent implements OnInit{
       const commandList: string[] = command.split('');
       try {
         commandList.forEach(item => {
-          switch (item) {
+          switch(item) {
             case 'A':
               !amIOutsideSquare(this.rover, this.inputLocation)
               ?
@@ -125,7 +124,7 @@ export class AppComponent implements OnInit{
           }
 
           if (amIOutsideSquare(this.rover, this.inputLocation)) {
-            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`);
+            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
         });
@@ -136,7 +135,7 @@ export class AppComponent implements OnInit{
       }
     } else {
       const today = new Date();
-      rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`);
+      rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`)
     }
   }
 
@@ -157,5 +156,5 @@ export class AppComponent implements OnInit{
       }
     };
     this.command = '';
-  }
+  };
 }
