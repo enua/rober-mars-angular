@@ -44,13 +44,19 @@ button {
   border-color: #2e6da4;
   color: #fff;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 button:hover {
   color: #fff;
   background-color: #286090;
   border-color: #204d74;
-  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #99b4cc;
+  border-color: #799bb9;
+  cursor: unset;
 }
 
 .errors {
@@ -65,6 +71,13 @@ button:hover {
 
 .errors > i {
   color: #333;
+}
+.hasErrors {
+  color: #d43f3a;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid #d43f3a;
 }
 
 @media(max-width: 769px) {

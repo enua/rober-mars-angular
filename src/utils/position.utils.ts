@@ -1,5 +1,5 @@
 import { Position, Rover } from '../models/electronics';
-import { World } from '../models/places';
+import { Orientation, World } from '../models/places';
 export const moveRoverForward = (
   position: Position //TODO: TYped in places.orientation?
   ): Position => {
@@ -23,24 +23,18 @@ export const moveRoverForward = (
 }
 
   export const getPointer = (
-      pointer: 'N' | 'S' | 'E' | 'W' | '',
+      pointer: Orientation,
       direction: string,
-    ): ('N' | 'S' | 'E' | 'W' | '') => {
-      const pointers: ('N' | 'S' | 'E' | 'W' | '')[] = ['W', 'N', 'E', 'S'];
-      let pos: 'N' | 'S' | 'E' | 'W' | '' = '';
+    ): Orientation => {
+      const pointers: Orientation[] = ['W', 'N', 'E', 'S'];
+      let pos: Orientation = '';
       pointers.forEach((item, index) =>{
         if(item === pointer && direction === 'L') {
-          console.log('LEFT')
           pos = index > 0 ? pointers[index-1] : pointers[pointers.length - 1];
-          if (index > 0) console.log(pointers[index], pointers[pointers.length])
-          console.log('test', pos)
-
         } else if(item === pointer && direction === 'R') {
-          console.log('RIGHT')
-          pos = index < pointers.length ? pointers[index + 1] : pointers[0];
+          pos = (index + 1) < pointers.length ? pointers[index + 1] : pointers[0];
         }
       })
-      console.log(pos)
       return pos
   }
 
@@ -56,5 +50,3 @@ export const moveRoverForward = (
     return false;
   }
 
-  // TODO: RENAME to positions.utils.ts
-  // validations.utils.ts

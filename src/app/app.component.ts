@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { isNil } from 'lodash';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
-import { World, Location } from '../models/places';
+import { Orientation, World } from '../models/places';
 import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/position.utils';
 
 @Component({
@@ -10,19 +10,13 @@ import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/po
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  locationForm: FormGroup;
+
   // world
   eight: number = 15;
   width: number = 15;
 
-  inputLocation: World = {
-    eight: this.eight,
-    width: this.width,
-    orientation: 'N',
-    location: {
-      latitude: 7,
-      longitude: 7,
-    }
-  };
+  inputLocation: World;
 
   orientationList = [
     {name: 'Nord',  value: 'N'},
@@ -32,73 +26,95 @@ export class AppComponent {
   ]
 
   // init rover values
-  rover: Rover = {
+   rover: Rover = {
     position: {
-      pointer: this.inputLocation.orientation !== '' ? this.inputLocation.orientation : '',
+      pointer: '',
       coordinates: {
-        latitude: this.inputLocation.location.latitude ? this.inputLocation.location.latitude : NaN,
-        longitude: this.inputLocation.location.longitude ? this.inputLocation.location.longitude : NaN,
+        latitude: NaN,
+        longitude: NaN,
       },
     },
     warnings: []
   }
 
-  orientation: 'N' | 'S' | 'E' | 'W' | '';
-  command: string = 'AALAALAALAAL';
+  orientation: Orientation;
+  command: string = '';
   isInSquare: boolean = true;
   isInvalid: boolean = false;
   actualPosition: string[] = [];
+  regeExp: string = '^[\s\dALR]+$';
+
+
+  ngOnInit() {
+    this.locationForm = new FormGroup({
+      eight: new FormControl(10, Validators.required),
+      width: new FormControl(10, Validators.required),
+      command: new FormControl(null, [Validators.required, this.forbiddenCommands]),
+      latitude: new FormControl(1, Validators.required),
+      longitude: new FormControl(1, Validators.required),
+      orientation: new FormControl('N', Validators.required),
+    })
+  }
 
   addOrientation(orientation: string): void {
   }
 
   checkCommand = (ev: KeyboardEvent): boolean => {
-    return this.validateRegex('[ALR]', this.command);
+    return this.validateRegex(this.regeExp, this.command);
   }
 
   validateRegex(regex: string, text: string): boolean {
     const regexp = new RegExp(regex);
     const check = regexp.test(text);
-    return check; //TODO:
+    return check;
   }
 
-  handleClick = () => {
-    // TODO: VALIDATIONS
+  forbiddenCommands = (control: FormControl): {[s: string]: boolean} => {
+    if (!this.validateRegex(this.regeExp, control.value)) {
+      return { 'regeExpisForbidden': true };
+    }
 
-    if(
-      isNil(this.inputLocation.eight) ||
-      isNil(this.inputLocation.width) ||
-      this.command === '' ||
-      isNil(this.inputLocation.location.latitude) ||
-      isNil(this.inputLocation.location.longitude) ||
-      isNil(this.inputLocation.orientation)
-      ){
-        this.isInvalid = true;
-        this.hideErrorForm();
-        return;
+    return null;
+  }
+
+
+
+  handleClick = () => {
+    if(this.locationForm.valid) {
+
+      this.inputLocation = {
+        eight: this.locationForm.get('eight').value as number,
+        width: this.locationForm.get('width').value as number,
+        orientation: this.locationForm.get('orientation').value as Orientation,
+        location: {
+          latitude: this.locationForm.get('latitude').value as number,
+          longitude: this.locationForm.get('longitude').value as number,
+        }
+      };
+
+      this.command = this.locationForm.get('command').value as string;
+
+      this.rover = {
+        position: {
+          pointer: this.rover?.position.pointer ? this.rover.position.pointer : this.inputLocation.orientation,
+          coordinates: {
+            latitude: this.rover?.position.coordinates.latitude ? this.rover.position.coordinates.latitude : this.inputLocation.location.latitude,
+            longitude: this.rover?.position.coordinates.longitude ? this.rover.position.coordinates.longitude : this.inputLocation.location.longitude,
+          }
+        },
+        warnings: [...this.rover?.warnings],
       }
 
-    this.rover = {
-      position: {
-        pointer: this.rover.position.pointer ? this.rover.position.pointer : this.inputLocation.orientation,
-        coordinates: {
-          latitude: this.rover.position.coordinates.latitude ? this.rover.position.coordinates.latitude : this.inputLocation.location.latitude,
-          longitude: this.rover.position.coordinates.longitude ? this.rover.position.coordinates.longitude : this.inputLocation.location.longitude,
-        }
-      },
-      warnings: [...this.rover.warnings],
+      //5. Move the rover
+      this.moveRover(this.rover, this.command);
+
+      this.finished(this.rover, this.isInSquare);
     }
-    //5. Move the rover
-
-    this.moveRover(this.rover, this.command);
-
-    this.finished(this.rover, this.isInSquare);
   }
 
   moveRover = (rover: Rover, command: string) => {
     if (this.validateRegex('[ALR]', command) && this.command) {
       const commandList: string[] = command.split('');
-      console.log(commandList)
       try {
         commandList.forEach(item => {
 
@@ -123,6 +139,7 @@ export class AppComponent {
 
       } catch (error) {
         console.log(error);
+        alert('Stop!')
         this.isInSquare = false;
       }
     } else {
@@ -131,11 +148,10 @@ export class AppComponent {
     }
   }
 
-  // TODO:
   finished = (rover: Rover, isInSquare: boolean) => {
     this.emptyForm();
     this.actualPosition.push(
-      `${isInSquare}, ${rover.position.pointer}, (${rover.position.coordinates.latitude},${rover.position.coordinates.longitude})`);//'True, N, (4,5)' // TODO:
+      `${isInSquare}, ${rover.position.pointer}, (${rover.position.coordinates.latitude},${rover.position.coordinates.longitude})`);
   }
 
   emptyForm(): void{
@@ -151,6 +167,7 @@ export class AppComponent {
     this.command = '';
   };
 
+  // TODO: check for remove
   hideErrorForm() {
     setTimeout(()=>{
       this.isInvalid = false;

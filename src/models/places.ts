@@ -1,7 +1,7 @@
 export interface World {
   eight: number;
   width: number;
-  orientation: 'N' | 'S' | 'E' | 'W' | '';
+  orientation: Orientation;
   location: Location;
 }
 

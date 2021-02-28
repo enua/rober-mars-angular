@@ -7,37 +7,53 @@
   </header>
 
   <div class="card">
-
-    <div class="form">
+  <form [formGroup]="locationForm" (ngSubmit)="handleClick()">
+    <div class="form-group">
       <div class="container">
         <span>Eigth (<i>*</i>):</span>
         <input
           class="form-control"
           type="number"
           min=0
-          [(ngModel)]="inputLocation.eight"
-          placeholder="Mars square eight"/>
-        </div>
+          placeholder="Mars square eight"
+          formControlName="eight"
+        />
+        <span
+          *ngIf="!locationForm.get('eight').valid && locationForm.get('eight').touched"
+          class="hasErrors"
+        >Thisl field is required</span>
+      </div>
+
       <div class="container">
-        <span>width (<i>*</i>):</span>
+        <span>Width (<i>*</i>):</span>
         <input
           class="form-control"
           type="number"
           min=0
-          [(ngModel)]="inputLocation.width"
-          placeholder="Mars square eight"/>
+          placeholder="Mars square width"
+          formControlName="width"
+        />
+        <span
+          *ngIf="!locationForm.get('width').valid && locationForm.get('width').touched"
+          class="hasErrors"
+        >Thisl field is required</span>
       </div>
-    </div>
-    <div class="form">
       <div class="container">
         <span>Command (<i>*</i>):</span>
         <input
           class="form-control"
           type="text"
-          [(ngModel)]="command"
-          (keyup)="checkCommand($event)"
           placeholder="Enter your command: AALAARALA"
+          formControlName="command"
         />
+        <span
+          *ngIf="!locationForm.get('command').valid && locationForm.get('command').touched"
+          class="hasErrors"
+        >
+        <span *ngIf="locationForm.get('command').errors['required']"> Thisl field is required</span>
+        <span *ngIf="locationForm.get('command').errors['regeExpisForbidden'] && !locationForm.get('command').errors['required']"> Unkwon comand
+          <img src="../assets/iconfinder_Space_mars_rover_6622866.png" height="25px"> !</span>
+      </span>
       </div>
       <div class="container">
         <span>Latitude (<i>*</i>):</span>
@@ -45,8 +61,13 @@
           class="form-control"
           type="number"
           min="0"
-          [(ngModel)]="inputLocation.location.latitude"
-          placeholder="Latitude"/>
+          placeholder="Latitude"
+          formControlName="latitude"
+        />
+        <span
+          *ngIf="!locationForm.get('latitude').valid && locationForm.get('latitude').touched"
+          class="hasErrors"
+        >Thisl field is required</span>
       </div>
       <div class="container">
         <span>Longitude (<i>*</i>):</span>
@@ -54,13 +75,17 @@
           class="form-control"
           type="number"
           min="0"
-          [(ngModel)]="inputLocation.location.longitude"
-          placeholder="Longitude"/>
-          </div>
+          placeholder="Longitude"
+          formControlName="longitude"
+          />
+          <span
+            *ngIf="!locationForm.get('longitude').valid && locationForm.get('longitude').touched"
+            class="hasErrors">Thisl field is required</span>
+        </div>
       <div class="container">
         <span>Orientation (<i>*</i>):</span>
-        <select [(ngModel)]="inputLocation.orientation">
-          <option
+        <select formControlName="orientation">
+        <option
             *ngFor="let orientation of orientationList"
             [ngValue]="orientation.value"
             (click)="addOrientation(orientation)"
@@ -68,18 +93,24 @@
             {{ orientation.name }}
           </option>
         </select>
+        <span
+          *ngIf="!locationForm.get('orientation').valid && locationForm.get('orientation').touched"
+          class="hasErrors"
+        >Thisl field is required</span>
       </div>
       <div class="container" *ngIf="isInvalid">
         <div class="errors">
-         Error: please fill form values (<i>*</i>)
+        Error: please fill form values (<i>*</i>)
         </div>
       </div>
-      <button
-        class="btn btn-default"
-        type="button"
-        (click)="handleClick()"
-      >START</button>
     </div>
+    <button
+      [disabled]="!locationForm.valid"
+      class="btn btn-default"
+      type="submit"
+
+      >START {{locationForm.valid}}</button>
+  </form>
   </div>
   <div class="clear">
     <div>

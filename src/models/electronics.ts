@@ -1,4 +1,4 @@
-import { Location } from "./places";
+import { Location, Orientation } from "./places";
 
 export interface Rover {
   name?: string;
@@ -8,6 +8,6 @@ export interface Rover {
 }
 
 export interface Position {
-  pointer: 'N' | 'S' | 'E' | 'W' | '';
+  pointer: Orientation;
   coordinates: Location;
 }
