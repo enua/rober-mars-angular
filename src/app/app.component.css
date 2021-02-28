@@ -1,5 +1,12 @@
 /* forms */
-.card { width: 100%; }
+.content {
+  background: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url('../assets/PinClipart.com_mars-rover-clipart_906532.png') no-repeat;
+  background-size: 600px;
+}
+
+.card {
+  width: 100%;
+}
 
 .form {
   padding-left: 10px;

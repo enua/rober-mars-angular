@@ -1,5 +1,5 @@
 export interface World {
-  eight: number;
+  height: number;
   width: number;
   orientation: Orientation;
   location: Location;
@@ -11,3 +11,5 @@ export interface Location {
 }
 
 export type Orientation =  'N' | 'S' | 'E' | 'W' | '';
+export type Direction =  'L' | 'R';
+export type Advance =  'A';

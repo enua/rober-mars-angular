@@ -13,7 +13,7 @@ export class AppComponent {
   locationForm: FormGroup;
 
   // world
-  eight: number = 15;
+  height: number = 15;
   width: number = 15;
 
   inputLocation: World;
@@ -47,11 +47,11 @@ export class AppComponent {
 
   ngOnInit() {
     this.locationForm = new FormGroup({
-      eight: new FormControl(10, Validators.required),
+      height: new FormControl(10, Validators.required),
       width: new FormControl(10, Validators.required),
-      command: new FormControl(null, [Validators.required, this.forbiddenCommands]),
-      latitude: new FormControl(1, Validators.required),
-      longitude: new FormControl(1, Validators.required),
+      command: new FormControl('ALLALLALLALL', [Validators.required, this.forbiddenCommands]),
+      latitude: new FormControl(5, Validators.required),
+      longitude: new FormControl(5, Validators.required),
       orientation: new FormControl('N', Validators.required),
     })
   }
@@ -76,7 +76,7 @@ export class AppComponent {
     if(this.locationForm.valid) {
 
       this.inputLocation = {
-        eight: this.locationForm.get('eight').value as number,
+        height: this.locationForm.get('height').value as number,
         width: this.locationForm.get('width').value as number,
         orientation: this.locationForm.get('orientation').value as Orientation,
         location: {
@@ -112,9 +112,13 @@ export class AppComponent {
         commandList.forEach(item => {
           switch(item) {
             case 'A':
-              nextStepIsAvailable(rover.position.coordinates, this.inputLocation)
-              ? rover.position = rover.position
-              : rover.position = moveRoverForward(rover.position);
+              !amIOutsideSquare(this.rover, this.inputLocation)
+              ?
+              (nextStepIsAvailable(this.rover, this.inputLocation, ) ?
+              rover.position = moveRoverForward(rover.position) :
+              rover.warnings.push(`WARNING LIMIT on: [${command}] command, at: ${new Date()}`)
+              )
+              : rover.position = rover.position;
               break;
             default:
               rover.position.pointer = getPointer(rover.position.pointer, item);
@@ -122,7 +126,7 @@ export class AppComponent {
           }
 
           if (amIOutsideSquare(this.rover, this.inputLocation)) {
-            rover.warnings.push(`Collision ALERT on: ${command} command, at: ${new Date()}`)
+            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
         });
@@ -145,8 +149,8 @@ export class AppComponent {
 
   emptyForm(): void{
     this.inputLocation = {
-      eight: this.inputLocation.eight,
-      width: this.inputLocation.eight,
+      height: this.inputLocation.height,
+      width: this.inputLocation.height,
       orientation: '',
       location: {
         latitude: this.rover.position.coordinates.latitude,
