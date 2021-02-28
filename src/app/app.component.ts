@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
 import { Orientation, World } from '../models/places';
@@ -9,21 +9,19 @@ import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } f
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   locationForm: FormGroup;
 
   // world
-  height: number = 15;
-  width: number = 15;
-
+  height = 15;
+  width = 15;
   inputLocation: World;
-
   orientationList = [
     {name: 'Nord',  value: 'N'},
     {name: 'South', value: 'S'},
     {name: 'East',  value: 'E'},
     {name: 'West',  value: 'W'},
-  ]
+  ];
 
   // init rover values
    rover: Rover = {
@@ -35,17 +33,17 @@ export class AppComponent {
       },
     },
     warnings: []
-  }
+  };
 
   orientation: Orientation;
-  command: string = '';
-  isInSquare: boolean = true;
-  isInvalid: boolean = false;
+  command = '';
+  isInSquare = true;
+  isInvalid = false;
   actualPosition: string[] = [];
-  regeExp: string = '^[\s\dALR]+$';
+  regeExp = '^[\s\dALR]+$';
 
 
-  ngOnInit() {
+  ngOnInit = (): void => {
     this.locationForm = new FormGroup({
       height: new FormControl(10, Validators.required),
       width: new FormControl(10, Validators.required),
@@ -53,7 +51,7 @@ export class AppComponent {
       latitude: new FormControl(5, Validators.required),
       longitude: new FormControl(5, Validators.required),
       orientation: new FormControl('N', Validators.required),
-    })
+    });
   }
 
   validateRegex(regex: string, text: string): boolean {
@@ -64,17 +62,15 @@ export class AppComponent {
 
   forbiddenCommands = (control: FormControl): {[s: string]: boolean} => {
     if (!this.validateRegex(this.regeExp, control.value)) {
-      return { 'regeExpisForbidden': true };
+      /* object-literal-key-quotes */
+      return { regeExpisForbidden: true };
     }
 
     return null;
   }
 
-
-
   handleClick = () => {
-    if(this.locationForm.valid) {
-
+    if (this.locationForm.valid) {
       this.inputLocation = {
         height: this.locationForm.get('height').value as number,
         width: this.locationForm.get('width').value as number,
@@ -91,14 +87,17 @@ export class AppComponent {
         position: {
           pointer: this.rover?.position.pointer ? this.rover.position.pointer : this.inputLocation.orientation,
           coordinates: {
-            latitude: this.rover?.position.coordinates.latitude ? this.rover.position.coordinates.latitude : this.inputLocation.location.latitude,
-            longitude: this.rover?.position.coordinates.longitude ? this.rover.position.coordinates.longitude : this.inputLocation.location.longitude,
+            latitude: this.rover?.position.coordinates.latitude ?
+              this.rover.position.coordinates.latitude :
+              this.inputLocation.location.latitude,
+            longitude: this.rover?.position.coordinates.longitude ?
+              this.rover.position.coordinates.longitude :
+              this.inputLocation.location.longitude,
           }
         },
         warnings: [...this.rover?.warnings],
-      }
+      };
 
-      //5. Move the rover
       this.moveRover(this.rover, this.command);
 
       this.finished(this.rover, this.isInSquare);
@@ -110,7 +109,7 @@ export class AppComponent {
       const commandList: string[] = command.split('');
       try {
         commandList.forEach(item => {
-          switch(item) {
+          switch (item) {
             case 'A':
               !amIOutsideSquare(this.rover, this.inputLocation)
               ?
@@ -126,7 +125,7 @@ export class AppComponent {
           }
 
           if (amIOutsideSquare(this.rover, this.inputLocation)) {
-            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
+            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`);
             throw new Error('Rover, dare might things!');
           }
         });
@@ -137,7 +136,7 @@ export class AppComponent {
       }
     } else {
       const today = new Date();
-      rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`)
+      rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`);
     }
   }
 
@@ -158,10 +157,5 @@ export class AppComponent {
       }
     };
     this.command = '';
-  };
-
-  get inputLocationIsFilled() {
-    return true;
   }
-
 }

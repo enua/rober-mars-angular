@@ -19,9 +19,9 @@ describe('utils.position', () => {
          },
          warnings: [],
        };
-       const expectedPosition: Position = {coordinates: {latitude: 2, longitude: 1}, pointer: 'N'}
-       expect(moveRoverForward(rover.position)).toEqual(expectedPosition)
-    })
+      const expectedPosition: Position = {coordinates: {latitude: 2, longitude: 1}, pointer: 'N'};
+      expect(moveRoverForward(rover.position)).toEqual(expectedPosition);
+    });
   });
 
   describe('getPointer', () => {
@@ -38,7 +38,7 @@ describe('utils.position', () => {
       };
       expect(getPointer(rover.position.pointer, 'L')).toBe('W');
       expect(getPointer(rover.position.pointer, 'R')).toBe('E');
-    })
+    });
   });
 
   describe('amIOutsideSquare', () => {
@@ -51,7 +51,7 @@ describe('utils.position', () => {
           latitude: 1,
           longitude: 1,
         }
-      }
+      };
       const rover: Rover = {
        position: {
          pointer: 'N',
@@ -64,7 +64,7 @@ describe('utils.position', () => {
       };
       const roverCloned: Rover = clone(rover);
       expect(amIOutsideSquare(roverCloned, inputLocation)).toBe(false);
-    })
+    });
     it('should return true if it is out the given square', () => {
       const inputLocation: World = {
         width: 10,
@@ -74,7 +74,7 @@ describe('utils.position', () => {
           latitude: 1,
           longitude: 1,
         }
-      }
+      };
       const rover: Rover = {
        position: {
          pointer: 'N',
@@ -88,7 +88,7 @@ describe('utils.position', () => {
       const roverCloned: Rover = clone(rover);
       roverCloned.position.coordinates.latitude = 14;
       expect(amIOutsideSquare(roverCloned, inputLocation)).toBe(true);
-    })
+    });
   });
 
   describe('nextStepIsAvailable', () => {
@@ -101,7 +101,7 @@ describe('utils.position', () => {
           latitude: 1,
           longitude: 1,
         }
-      }
+      };
       const rover: Rover = {
        position: {
          pointer: 'N',
@@ -113,7 +113,7 @@ describe('utils.position', () => {
         warnings: [],
       };
       expect(nextStepIsAvailable(rover, inputLocation)).toBe(true);
-    })
+    });
     it('should return false when next step is not available', () => {
       const inputLocation: World = {
         width: 10,
@@ -123,7 +123,7 @@ describe('utils.position', () => {
           latitude: 1,
           longitude: 1,
         }
-      }
+      };
       const rover: Rover = {
        position: {
          pointer: 'N',
@@ -137,7 +137,7 @@ describe('utils.position', () => {
       const roverCloned: Rover = clone(rover);
       roverCloned.position.coordinates.latitude = 11;
       expect(nextStepIsAvailable(roverCloned, inputLocation)).toBe(false);
-    })
+    });
     it('should return true when orientation limit is far away', () => {
       const inputLocation: World = {
         width: 10,
@@ -147,7 +147,7 @@ describe('utils.position', () => {
           latitude: 1,
           longitude: 1,
         }
-      }
+      };
       const rover: Rover = {
        position: {
          pointer: 'N',
@@ -162,6 +162,6 @@ describe('utils.position', () => {
       roverCloned.position.coordinates.latitude = 3;
       roverCloned.position.pointer = 'S';
       expect(nextStepIsAvailable(roverCloned, inputLocation)).toBe(true);
-    })
+    });
   });
 });

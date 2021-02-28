@@ -1,4 +1,4 @@
-import { Location, Orientation } from "./places";
+import { Location, Orientation } from './places';
 
 export interface Rover {
   name?: string;
