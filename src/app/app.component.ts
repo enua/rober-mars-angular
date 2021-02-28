@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
 import { Orientation, World } from '../models/places';
-import { checkPositionInSquare, getPointer, moveRoverForward } from '../utils/position.utils';
+import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } from '../utils/position.utils';
 
 @Component({
   selector: 'app-root',
@@ -54,13 +54,6 @@ export class AppComponent {
       longitude: new FormControl(1, Validators.required),
       orientation: new FormControl('N', Validators.required),
     })
-  }
-
-  addOrientation(orientation: string): void {
-  }
-
-  checkCommand = (ev: KeyboardEvent): boolean => {
-    return this.validateRegex(this.regeExp, this.command);
   }
 
   validateRegex(regex: string, text: string): boolean {
@@ -117,30 +110,26 @@ export class AppComponent {
       const commandList: string[] = command.split('');
       try {
         commandList.forEach(item => {
-
           switch(item) {
             case 'A':
-              checkPositionInSquare(rover, this.inputLocation)
+              nextStepIsAvailable(rover.position.coordinates, this.inputLocation)
               ? rover.position = rover.position
               : rover.position = moveRoverForward(rover.position);
               break;
             default:
-              checkPositionInSquare(rover, this.inputLocation)
-              ? rover.position.pointer = rover.position.pointer
-              : rover.position.pointer = getPointer(rover.position.pointer, item);
+              rover.position.pointer = getPointer(rover.position.pointer, item);
               break;
           }
 
-          if (checkPositionInSquare(rover, this.inputLocation)) {
-            rover.warnings.push(`(${rover.position.coordinates.longitude}, ${rover.position.coordinates.latitude}) <--- Failed to execute on ${new Date()}`)
+          if (amIOutsideSquare(this.rover, this.inputLocation)) {
+            rover.warnings.push(`Collision ALERT on: ${command} command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
         });
 
       } catch (error) {
         console.log(error);
-        alert('Stop!')
-        this.isInSquare = false;
+        this.isInSquare = amIOutsideSquare(this.rover, this.inputLocation);
       }
     } else {
       const today = new Date();
@@ -151,7 +140,7 @@ export class AppComponent {
   finished = (rover: Rover, isInSquare: boolean) => {
     this.emptyForm();
     this.actualPosition.push(
-      `${isInSquare}, ${rover.position.pointer}, (${rover.position.coordinates.latitude},${rover.position.coordinates.longitude})`);
+      `${this.locationForm.valid}, ${rover.position.pointer}, (${rover.position.coordinates.latitude},${rover.position.coordinates.longitude})`);
   }
 
   emptyForm(): void{
@@ -167,10 +156,8 @@ export class AppComponent {
     this.command = '';
   };
 
-  // TODO: check for remove
-  hideErrorForm() {
-    setTimeout(()=>{
-      this.isInvalid = false;
-    }, 3000);
+  get inputLocationIsFilled() {
+    return true;
   }
+
 }

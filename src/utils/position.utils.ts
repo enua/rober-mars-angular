@@ -1,7 +1,7 @@
 import { Position, Rover } from '../models/electronics';
-import { Orientation, World } from '../models/places';
+import { Orientation, World, Location } from '../models/places';
 export const moveRoverForward = (
-  position: Position //TODO: TYped in places.orientation?
+  position: Position
   ): Position => {
     console.log('[[-'+position.pointer+']]')
     switch(position.pointer) {
@@ -38,7 +38,7 @@ export const moveRoverForward = (
       return pos
   }
 
-  export const checkPositionInSquare = (rover: Rover, inputLocation: World): boolean => {
+  export const amIOutsideSquare = (rover: Rover, inputLocation: World): boolean => {
     if (
       rover.position.coordinates.latitude >= inputLocation.width ||
       rover.position.coordinates.latitude <= 0 ||
@@ -48,5 +48,15 @@ export const moveRoverForward = (
       return true;
     }
     return false;
+  }
+  export const nextStepIsAvailable = (location: Location, inputLocation: World): boolean => {
+    if (
+      (location.latitude <= inputLocation.eight ||
+      location.latitude >= 0) &&
+      (location.longitude >= 0 || location.longitude <= inputLocation.width)
+      ) {
+      return false;
+    }
+    return true;
   }
 
