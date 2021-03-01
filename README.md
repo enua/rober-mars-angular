@@ -4,14 +4,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `npm run serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+NodeJs 12 is needed to run the server in development mode;
+
+1. Run `npm run start` for a dev server. 
+2. Node will install dependencies on project's folder and will start the mars rover project.
+3. Navigate to `http://localhost:4200/`.
 
 Also you can run the tests with `npm run test`.
 
-All files pass linting.
-All files pass tests.
-
-## Why this app
+## Why this app exists
 
 As a technical process demands: 
 

@@ -45,12 +45,12 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.locationForm = new FormGroup({
-      height: new FormControl(10, Validators.required),
-      width: new FormControl(10, Validators.required),
-      command: new FormControl('ALLALLALLALL', [Validators.required, this.forbiddenCommands]),
-      latitude: new FormControl(5, Validators.required),
-      longitude: new FormControl(5, Validators.required),
-      orientation: new FormControl('N', Validators.required),
+      height: new FormControl(null, Validators.required),
+      width: new FormControl(null, Validators.required),
+      command: new FormControl('', [Validators.required, this.forbiddenCommands]),
+      latitude: new FormControl(null, Validators.required),
+      longitude: new FormControl(null, Validators.required),
+      orientation: new FormControl('', Validators.required),
     })
   }
 
