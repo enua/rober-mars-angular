@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
 import { Orientation, World } from '../models/places';
+import { RoverPositionService } from '../services/positionService';
 import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } from '../utils/position.utils';
 
 @Component({
@@ -11,6 +12,9 @@ import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } f
 })
 export class AppComponent implements OnInit{
   locationForm: FormGroup;
+
+  //roverService
+  roverService: RoverPositionService;
 
   // world
   height = 15;
@@ -42,15 +46,18 @@ export class AppComponent implements OnInit{
   actualPosition: string[] = [];
   regeExp = '^[\s\dALR]+$';
 
+  constructor(roverService: RoverPositionService) {
+    this.roverService = roverService;
+  }
 
   ngOnInit() {
     this.locationForm = new FormGroup({
-      height: new FormControl(null, Validators.required),
-      width: new FormControl(null, Validators.required),
-      command: new FormControl('', [Validators.required, this.forbiddenCommands]),
-      latitude: new FormControl(null, Validators.required),
-      longitude: new FormControl(null, Validators.required),
-      orientation: new FormControl('', Validators.required),
+      height: new FormControl(10, Validators.required),
+      width: new FormControl(10, Validators.required),
+      command: new FormControl('ALLL', [Validators.required, this.forbiddenCommands]),
+      latitude: new FormControl(5, Validators.required),
+      longitude: new FormControl(5, Validators.required),
+      orientation: new FormControl('N', Validators.required),
     })
   }
 
@@ -104,6 +111,7 @@ export class AppComponent implements OnInit{
   }
 
   moveRover = (rover: Rover, command: string) => {
+    this.roverService.setRoverPosition(rover);
     if (this.validateRegex('[ALR]', command) && this.command) {
       const commandList: string[] = command.split('');
       try {
