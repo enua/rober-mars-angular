@@ -47,13 +47,6 @@ export class AppComponent implements OnInit{
   actualPosition: string[] = [];
   regeExp = '^[\s\dALR]+$';
 
-  tiles: Tile[] = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
-
   constructor(roverService: RoverPositionService) {
     this.roverService = roverService;
   }
@@ -62,7 +55,7 @@ export class AppComponent implements OnInit{
     this.locationForm = new FormGroup({
       height: new FormControl(10, Validators.required),
       width: new FormControl(10, Validators.required),
-      command: new FormControl('ALLL', [Validators.required, this.forbiddenCommands]),
+      command: new FormControl('ALLR', [Validators.required, this.forbiddenCommands]),
       latitude: new FormControl(5, Validators.required),
       longitude: new FormControl(5, Validators.required),
       orientation: new FormControl('N', Validators.required),
