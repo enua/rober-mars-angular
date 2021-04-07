@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
+import { Tile } from '../models/material';
 import { Orientation, World } from '../models/places';
 import { RoverPositionService } from '../services/positionService';
 import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } from '../utils/position.utils';
@@ -45,6 +46,13 @@ export class AppComponent implements OnInit{
   isInvalid = false;
   actualPosition: string[] = [];
   regeExp = '^[\s\dALR]+$';
+
+  tiles: Tile[] = [
+    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
+    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
+    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
+    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+  ];
 
   constructor(roverService: RoverPositionService) {
     this.roverService = roverService;
