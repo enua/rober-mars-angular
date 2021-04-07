@@ -5,6 +5,7 @@ import { RoverPositionService } from '../services/positionService';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     RoverPositionService,
