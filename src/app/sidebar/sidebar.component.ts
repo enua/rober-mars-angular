@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Rover } from '../../models/electronics';
+import { RoverPositionService } from '../../services/positionService';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  rover: Rover = {} as Rover;
+  roverService: RoverPositionService;
 
-  ngOnInit(): void {
+  constructor(roverService: RoverPositionService) {
+    this.roverService = roverService;
   }
 
+  ngOnInit(): void {
+    this.roverService.roverPosition.subscribe((data) => this.rover = data);
+  }
 }
