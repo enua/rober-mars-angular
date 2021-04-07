@@ -1,0 +1,31 @@
+<h1>Information: </h1>
+<p>
+  <mat-form-field appearance="legacy">
+    <mat-label>Latitude</mat-label>
+    <input matInput placeholder="Placeholder" disabled [value]="rover?.position?.coordinates?.latitude">
+    <mat-hint>Nord-South</mat-hint>
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field appearance="legacy">
+    <mat-label>Longitude</mat-label>
+    <input matInput placeholder="Placeholder" disabled [value]="rover?.position?.coordinates?.longitude">
+    <mat-hint>East-West</mat-hint>
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field appearance="legacy">
+    <mat-label>Pointer</mat-label>
+    <input matInput placeholder="Placeholder" disabled [value]="rover?.position?.pointer">
+    <mat-hint>(N) Nord</mat-hint>
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field appearance="legacy">
+    <mat-label>Warnings</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let warning of rover?.warnings" [value]="warning">{{ warning }}</mat-option>
+  </mat-select>
+  </mat-form-field>
+</p>
+
