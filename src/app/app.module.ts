@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RoverPositionService } from '../services/positionService';
+import { WorldService } from '../services/worldService';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -10,11 +11,17 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+
+import { MapComponent } from './map/map.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    SidebarComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -24,9 +31,12 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    FlexLayoutModule,
+    MatCardModule,
   ],
   providers: [
     RoverPositionService,
+    WorldService,
   ],
   bootstrap: [AppComponent]
 })

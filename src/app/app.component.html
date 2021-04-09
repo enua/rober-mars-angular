@@ -1,149 +1,140 @@
-<style>
-</style>
 <div class="content" role="main">
   <header>
 
   </header>
 
-  <mat-grid-list cols="4">
-    <mat-grid-tile
-        [colspan]="3"
-        [rowspan]="1"
-    >
-      <div class="card">
-        <form [formGroup]="locationForm" (ngSubmit)="handleClick()">
-          <div class="form-group">
-            <div> initial Rover location:</div>
-            <div class="initialLocationForm">
-              <div class="container">
-                <span>Eigth (<i>*</i>):</span>
-                <input
-                  class="form-control"
-                  type="number"
-                  min=0
-                  placeholder="Mars square height"
-                  formControlName="height"
-                />
-                <span
-                  *ngIf="!locationForm.get('height').valid && locationForm.get('height').touched"
-                  class="hasErrors"
-                >This field is required</span>
-              </div>
+  <mat-card class="card-container">
+    <mat-card-title>Mars Rover Localization Panel</mat-card-title>
+    <mat-card-subtitle style="color: grey">This panel allows you to move the rover throw a map:
+    </mat-card-subtitle>
+    <mat-card-content>
+      <div class="containerX">
+        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex
+             class="coloredContainerX box">
+          <div fxFlex class="form">
+            <div class="card">
+              <form [formGroup]="locationForm" (ngSubmit)="handleClick()">
+                <div class="form-group">
+                  <div> initial Rover location:</div>
+                  <div class="initialLocationForm">
+                    <div class="container">
+                      <span>Eigth (<i>*</i>):</span>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min=0
+                        placeholder="Mars square height"
+                        formControlName="height"
+                      />
+                      <span
+                        *ngIf="!locationForm.get('height').valid && locationForm.get('height').touched"
+                        class="hasErrors"
+                      >This field is required</span>
+                    </div>
 
-              <div class="container">
-                <span>Width (<i>*</i>):</span>
-                <input
-                  class="form-control"
-                  type="number"
-                  min=0
-                  placeholder="Mars square width"
-                  formControlName="width"
-                />
-                <span
-                  *ngIf="!locationForm.get('width').valid && locationForm.get('width').touched"
-                  class="hasErrors"
-                >This field is required</span>
-              </div>
+                    <div class="container">
+                      <span>Width (<i>*</i>):</span>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min=0
+                        placeholder="Mars square width"
+                        formControlName="width"
+                      />
+                      <span
+                        *ngIf="!locationForm.get('width').valid && locationForm.get('width').touched"
+                        class="hasErrors"
+                      >This field is required</span>
+                    </div>
 
-              <div class="container">
-                <span>Latitude (<i>*</i>):</span>
-                <input
-                  class="form-control"
-                  type="number"
-                  min="0"
-                  placeholder="Latitude"
-                  formControlName="latitude"
-                />
-                <span
-                  *ngIf="!locationForm.get('latitude').valid && locationForm.get('latitude').touched"
-                  class="hasErrors"
-                >This field is required</span>
-              </div>
-              <div class="container">
-                <span>Longitude (<i>*</i>):</span>
-                <input
-                  class="form-control"
-                  type="number"
-                  min="0"
-                  placeholder="Longitude"
-                  formControlName="longitude"
-                  />
-                  <span
-                    *ngIf="!locationForm.get('longitude').valid && locationForm.get('longitude').touched"
-                    class="hasErrors">This field is required</span>
-                </div>
-              <div class="container">
-                <span>Orientation (<i>*</i>):</span>
-                <select formControlName="orientation">
-                <option
-                    *ngFor="let orientation of orientationList"
-                    [ngValue]="orientation.value"
-                    (click)="addOrientation(orientation)"
+                    <div class="container">
+                      <span>Latitude (<i>*</i>):</span>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="0"
+                        placeholder="Latitude"
+                        formControlName="latitude"
+                      />
+                      <span
+                        *ngIf="!locationForm.get('latitude').valid && locationForm.get('latitude').touched"
+                        class="hasErrors"
+                      >This field is required</span>
+                    </div>
+                    <div class="container">
+                      <span>Longitude (<i>*</i>):</span>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="0"
+                        placeholder="Longitude"
+                        formControlName="longitude"
+                        />
+                        <span
+                          *ngIf="!locationForm.get('longitude').valid && locationForm.get('longitude').touched"
+                          class="hasErrors">This field is required</span>
+                      </div>
+                    <div class="container">
+                      <span>Orientation (<i>*</i>):</span>
+                      <select formControlName="orientation">
+                      <option
+                          *ngFor="let orientation of orientationList"
+                          [ngValue]="orientation.value"
+                          (click)="addOrientation(orientation)"
+                          >
+                          {{ orientation.name }}
+                        </option>
+                      </select>
+                      <span
+                        *ngIf="!locationForm.get('orientation').valid && locationForm.get('orientation').touched"
+                        class="hasErrors"
+                      >This field is required</span>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="container">
+                    <span>Command (<i>*</i>):</span>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter your command: AALAARALA"
+                      formControlName="command"
+                    />
+                    <span
+                      *ngIf="!locationForm.get('command').valid && locationForm.get('command').touched"
+                      class="hasErrors"
                     >
-                    {{ orientation.name }}
-                  </option>
-                </select>
-                <span
-                  *ngIf="!locationForm.get('orientation').valid && locationForm.get('orientation').touched"
-                  class="hasErrors"
-                >This field is required</span>
-              </div>
-            </div>
-            <hr>
-            <div class="container">
-              <span>Command (<i>*</i>):</span>
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Enter your command: AALAARALA"
-                formControlName="command"
-              />
-              <span
-                *ngIf="!locationForm.get('command').valid && locationForm.get('command').touched"
-                class="hasErrors"
-              >
-              <span *ngIf="locationForm.get('command').errors['required']"> This field is required</span>
-              <span *ngIf="locationForm.get('command').errors['regeExpisForbidden'] && !locationForm.get('command').errors['required']"> Unknown comand
-                <img src="../assets/iconfinder_Space_mars_rover_6622866.png" height="25px"> !</span>
-            </span>
+                    <span *ngIf="locationForm.get('command').errors['required']"> This field is required</span>
+                    <span *ngIf="locationForm.get('command').errors['regeExpisForbidden'] && !locationForm.get('command').errors['required']"> Unknown comand
+                      <img src="../assets/iconfinder_Space_mars_rover_6622866.png" height="25px"> !</span>
+                  </span>
+                  </div>
+                </div>
+                <button
+                  [disabled]="!locationForm.valid"
+                  class="btn btn-default"
+                  type="submit"
+
+                  >START {{locationForm.valid}}</button>
+              </form>
             </div>
           </div>
-          <button
-            [disabled]="!locationForm.valid"
-            class="btn btn-default"
-            type="submit"
-
-            >START {{locationForm.valid}}</button>
-        </form>
+          <div fxFlex class="map">Map :
+            <app-map></app-map>
+          </div>
+          <div fxFlex class="sidebar">
+            <app-sidebar></app-sidebar>
+          </div>
+        </div>
       </div>
-    </mat-grid-tile>
-    <mat-grid-tile
-        [colspan]="1"
-        [rowspan]="1"
-        style="background-color: #b37c6c; color: white">
-        <app-sidebar></app-sidebar>
-    </mat-grid-tile>
-
-  </mat-grid-list>
-
-
-  <!-- <div class="clear">
-    <div>
-      <pre>INPUT: {{ inputLocation | json }}</pre>
-    </div>
-    <div>
-      <pre>ROVER: {{ rover | json }}</pre>
-    </div>
-    <div>
-      <pre>InSquare?: {{ isInSquare | json }}</pre>
-    </div>
-    <div>
-      <pre>Actualposition: {{ actualPosition | json }}</pre>
-    </div>
-  </div> -->
-  <!-- Footer -->
+    </mat-card-content>
+  </mat-card>
   <footer>
-
+    <div class="container">
+      <div class="row">
+        Mars Rover Position Panel
+      </div>
+    </div>
   </footer>
 
 </div>

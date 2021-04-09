@@ -1,9 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Rover } from '../models/electronics';
-import { Tile } from '../models/material';
 import { Orientation, World } from '../models/places';
 import { RoverPositionService } from '../services/positionService';
+import { WorldService } from '../services/worldService';
 import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } from '../utils/position.utils';
 
 @Component({
@@ -12,10 +12,12 @@ import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } f
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+
   locationForm: FormGroup;
 
   //roverService
   roverService: RoverPositionService;
+  worldService: WorldService;
 
   // world
   height = 15;
@@ -47,8 +49,12 @@ export class AppComponent implements OnInit{
   actualPosition: string[] = [];
   regeExp = '^[\s\dALR]+$';
 
-  constructor(roverService: RoverPositionService) {
+  constructor(
+    roverService: RoverPositionService,
+    worldService: WorldService,
+    ) {
     this.roverService = roverService;
+    this.worldService = worldService;
   }
 
   ngOnInit() {
@@ -91,6 +97,8 @@ export class AppComponent implements OnInit{
         }
       };
 
+      this.worldService.setWorldSize(this.inputLocation);
+
       this.command = this.locationForm.get('command').value as string;
 
       this.rover = {
@@ -112,7 +120,6 @@ export class AppComponent implements OnInit{
   }
 
   moveRover = (rover: Rover, command: string) => {
-    this.roverService.setRoverPosition(rover);
     if (this.validateRegex('[ALR]', command) && this.command) {
       const commandList: string[] = command.split('');
       try {
@@ -136,6 +143,9 @@ export class AppComponent implements OnInit{
             rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
+
+          // TODO: add object or similiar to grow with each rover moved to draw it into table.
+          this.roverService.setRoverPosition(rover);
         });
 
       } catch (error) {
