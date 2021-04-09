@@ -12,11 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
-import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-import { PlotlyModule } from 'angular-plotly.js';
 import { MapComponent } from './map/map.component';
 
-PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +28,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    PlotlyModule,
   ],
   providers: [
     RoverPositionService,
