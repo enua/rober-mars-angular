@@ -6,6 +6,7 @@
 
 .card {
   width: 100%;
+  padding-left: 10px;
 }
 
 .form {
@@ -15,7 +16,7 @@
 
 .container {
   padding: 0px 0px 10px 0px;
-  width: 60%;
+  width: 95%;
 }
 
 .container span {

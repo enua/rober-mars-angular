@@ -7,7 +7,7 @@
 
   <mat-grid-list cols="4">
     <mat-grid-tile
-        [colspan]="3"
+        [colspan]="1"
         [rowspan]="1"
     >
       <div class="card">
@@ -118,16 +118,20 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile
-        [colspan]="1"
+        [colspan]="2"
         [rowspan]="1"
-        style="background-color: #b37c6c; color: white">
-        <app-sidebar></app-sidebar>
+    >
+      <app-map></app-map>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="1"
+      [rowspan]="1"
+      style="background-color: #b37c6c; color: white"
+    >
+      <app-sidebar></app-sidebar>
     </mat-grid-tile>
 
   </mat-grid-list>
-
-  <plotly-plot [data]="graph.data" [layout]="graph.layout"></plotly-plot>
-
 
   <!-- <div class="clear">
     <div>
