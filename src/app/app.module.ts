@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RoverPositionService } from '../services/positionService';
+import { WorldService } from '../services/worldService';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -13,12 +14,14 @@ import { MatSelectModule } from '@angular/material/select';
 
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
+import { MapComponent } from './map/map.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    SidebarComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
   ],
   providers: [
     RoverPositionService,
+    WorldService,
   ],
   bootstrap: [AppComponent]
 })
