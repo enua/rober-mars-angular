@@ -10,3 +10,7 @@ table {
 .spacer {
   padding: 10px;
 }
+
+.rover_is_here {
+  background-color: chartreuse;
+}

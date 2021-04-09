@@ -1,10 +1,11 @@
 <table class="map" *ngIf="world.height">
   <tr *ngFor="let lat of latitude">
-    <td id="position_{{lat}}_{{long}}" *ngFor="let long of longitude">
-      <div class="spacer">{{lat}}_{{long}}</div>
+    <td
+      id="position_{{lat}}_{{long}}"
+      *ngFor="let long of longitude"
+      [class]="{'rover_is_here': amIonYou(lat, long)}"
+    >
+      <div class="spacer"></div>
     </td>
   </tr>
 </table>
-
-<pre>{{world|json}}</pre>
-<pre>{{rover|json}}</pre>
