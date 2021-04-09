@@ -109,7 +109,7 @@ input.ng-invalid.ng-touched {
 }
 
 footer {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   height: 100px;
   padding: 10px;
