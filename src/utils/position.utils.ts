@@ -5,10 +5,10 @@ export const moveRoverForward = (
   ): Position => {
     switch(position.pointer) {
       case 'N':
-        position.coordinates.latitude = position.coordinates.latitude + 1
+        position.coordinates.latitude = position.coordinates.latitude - 1
         break;
       case 'S':
-        position.coordinates.latitude = position.coordinates.latitude - 1
+        position.coordinates.latitude = position.coordinates.latitude + 1
         break;
       case 'E':
         position.coordinates.longitude = position.coordinates.longitude + 1
@@ -26,16 +26,16 @@ export const moveRoverForward = (
       direction: string,
     ): Orientation => {
       const pointers: Orientation[] = ['W', 'N', 'E', 'S'];
-      let pos: Orientation = '';
+      let position: Orientation = '';
       pointers.forEach((item, index) =>{
         if(item === pointer && direction === 'L') {
-          pos = index > 0 ? pointers[index-1] : pointers[pointers.length - 1];
+          position = index > 0 ? pointers[index-1] : pointers[pointers.length - 1];
         } else if(item === pointer && direction === 'R') {
-          pos = (index + 1) < pointers.length ? pointers[index + 1] : pointers[0];
+          position = (index + 1) < pointers.length ? pointers[index + 1] : pointers[0];
         }
       });
 
-      return pos;
+      return position;
   }
 
   export const amIOutsideSquare = (rover: Rover, inputLocation: World): boolean => {
@@ -52,18 +52,19 @@ export const moveRoverForward = (
     return false;
   }
   export const nextStepIsAvailable = (rover: Rover, inputLocation: World): boolean => {
+    console.log(rover.position.coordinates.latitude, inputLocation.height);
     switch (rover.position.pointer) {
       case 'N':
-        if (rover.position.coordinates.latitude >= inputLocation.height) return false;
+        if (rover.position.coordinates.latitude - 1 === 0) return false;
         break;
       case 'S':
-        if (rover.position.coordinates.latitude <= 0) return false;
+        if (rover.position.coordinates.latitude + 2 === inputLocation.height) return false;
         break;
       case 'E':
-        if (rover.position.coordinates.longitude >= inputLocation.width) return false;
+        if (rover.position.coordinates.longitude + 2 >= inputLocation.width) return false;
         break;
       case 'W':
-        if (rover.position.coordinates.longitude <= 0) return false;
+        if (rover.position.coordinates.longitude - 1 === 0) return false;
         break;
     }
 

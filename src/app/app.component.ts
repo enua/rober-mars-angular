@@ -59,11 +59,11 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.locationForm = new FormGroup({
-      height: new FormControl(10, Validators.required),
-      width: new FormControl(10, Validators.required),
-      command: new FormControl('ALLR', [Validators.required, this.forbiddenCommands]),
-      latitude: new FormControl(5, Validators.required),
-      longitude: new FormControl(5, Validators.required),
+      height: new FormControl(9, Validators.required),
+      width: new FormControl(9, Validators.required),
+      command: new FormControl('A', [Validators.required, this.forbiddenCommands]),
+      latitude: new FormControl(4, Validators.required),
+      longitude: new FormControl(4, Validators.required),
       orientation: new FormControl('N', Validators.required),
     })
   }
@@ -97,8 +97,6 @@ export class AppComponent implements OnInit{
         }
       };
 
-      this.worldService.setWorldSize(this.inputLocation);
-
       this.command = this.locationForm.get('command').value as string;
 
       this.rover = {
@@ -119,7 +117,7 @@ export class AppComponent implements OnInit{
     }
   }
 
-  moveRover = (rover: Rover, command: string) => {
+  moveRover(rover: Rover, command: string) {
     if (this.validateRegex('[ALR]', command) && this.command) {
       const commandList: string[] = command.split('');
       try {
@@ -129,23 +127,23 @@ export class AppComponent implements OnInit{
               !amIOutsideSquare(this.rover, this.inputLocation)
               ?
               (nextStepIsAvailable(this.rover, this.inputLocation, ) ?
-              rover.position = moveRoverForward(rover.position) :
-              rover.warnings.push(`WARNING LIMIT on: [${command}] command, at: ${new Date()}`)
+              this.rover.position = moveRoverForward(rover.position) :
+              this.rover.warnings.push(`${new Date()}`)
               )
-              : rover.position = rover.position;
+              : this.rover.position = rover.position;
               break;
             default:
-              rover.position.pointer = getPointer(rover.position.pointer, item);
+              this.rover.position.pointer = getPointer(rover.position.pointer, item);
               break;
           }
 
           if (amIOutsideSquare(this.rover, this.inputLocation)) {
-            rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
+            console.log('error?')
+            this.rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
 
           // TODO: add object or similiar to grow with each rover moved to draw it into table.
-          this.roverService.setRoverPosition(rover);
         });
 
       } catch (error) {
@@ -154,11 +152,14 @@ export class AppComponent implements OnInit{
       }
     } else {
       const today = new Date();
-      rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`)
+      this.rover.warnings.push(`Collision ALERT on: ${command} command, at: ${today}`)
     }
   }
 
   finished = (rover: Rover, isInSquare: boolean) => {
+    this.worldService.setWorldSize(this.inputLocation);
+    this.roverService.setRoverPosition(rover);
+
     this.emptyForm();
     this.actualPosition.push(
       `${this.locationForm.valid}, ${rover.position.pointer}, (${rover.position.coordinates.latitude},${rover.position.coordinates.longitude})`);

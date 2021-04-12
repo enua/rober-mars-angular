@@ -4,8 +4,10 @@
       id="position_{{lat}}_{{long}}"
       *ngFor="let long of longitude"
       [class]="{'rover_is_here': amIonYou(lat, long)}"
+
     >
-      <div class="spacer"></div>
+      <div *ngIf="amIonYou(lat, long)" class="spacer" [ngStyle]="getOrientation()">{{lat}}_{{long}}</div>
+      <div *ngIf="!amIonYou(lat, long)" class="spacer" >{{lat}}_{{long}}</div>
     </td>
   </tr>
 </table>
