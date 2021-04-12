@@ -16,6 +16,7 @@ export class MapComponent implements OnInit {
 
   worldService: WorldService;
   world: World = {} as World;
+
   latitude: number[] = [];
   longitude: number[] = [];
 
@@ -41,5 +42,25 @@ export class MapComponent implements OnInit {
   amIonYou(lat: number, long: number): boolean {
     return this.rover.position.coordinates.latitude === lat &&
     this.rover.position.coordinates.longitude === long
+  }
+
+  getOrientation(): object {
+    let border: string;
+    switch(this.rover.position.pointer) {
+      case 'N':
+        border = 'top';
+        break;
+      case 'E':
+        border = 'right';
+        break;
+      case 'S':
+        border = 'bottom';
+        break;
+      case 'W':
+        border = 'left';
+        break;
+    }
+    console.log(border)
+    return {[`border-${border}`]: '1px solid red'};
   }
 }
