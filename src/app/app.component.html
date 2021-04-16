@@ -15,6 +15,76 @@
             <div class="card">
               <form [formGroup]="locationForm" (ngSubmit)="handleClick()">
                 <div class="form-group">
+                  <div *ngIf="!roverWasLanded">
+                    <mat-form-field appearance="legacy" color="black">
+                      <mat-label>Eigth</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        placeholder="Eigth"
+                        min=0
+                        formControlName="height"
+                        [disabled]="roverWasLanded"
+                      >
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" color="black">
+                      <mat-label>Width</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        min=0
+                        placeholder="Mars square width"
+                        formControlName="width"
+                        [disabled]="roverWasLanded"
+                      >
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" color="black">
+                      <mat-label>Latitude</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        min="0"
+                        placeholder="Latitude"
+                        formControlName="latitude"
+                        [disabled]="roverWasLanded"
+                      >
+                      <mat-hint>Nord-South</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" color="black">
+                      <mat-label>Longitude</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        min="0"
+                        placeholder="Longitude"
+                        formControlName="longitude"
+                        [disabled]="roverWasLanded"
+                      >
+                      <mat-hint>East-West</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" color="black">
+                      <mat-label>Orientation</mat-label>
+                      <mat-select formControlName="orientation">
+                        <mat-option
+                        *ngFor="let orientation of orientationList"
+                        [value]="orientation.value"
+                        >{{ orientation.name }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field appearance="legacy" color="black">
+                    <mat-label>Command</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      placeholder="Enter your command: AALAARALA"
+                      formControlName="command"
+                    >
+                    <mat-hint>A: Advance, L: Left, R: Right</mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <!-- <div class="form-group">
                   <div> initial Rover location:</div>
                   <div class="initialLocationForm">
                     <div class="container">
@@ -40,6 +110,7 @@
                         min=0
                         placeholder="Mars square width"
                         formControlName="width"
+                        [disabled]="roverWasLanded"
                       />
                       <span
                         *ngIf="!locationForm.get('width').valid && locationForm.get('width').touched"
@@ -55,6 +126,7 @@
                         min="0"
                         placeholder="Latitude"
                         formControlName="latitude"
+                        [disabled]="roverWasLanded"
                       />
                       <span
                         *ngIf="!locationForm.get('latitude').valid && locationForm.get('latitude').touched"
@@ -69,6 +141,7 @@
                         min="0"
                         placeholder="Longitude"
                         formControlName="longitude"
+                        [disabled]="roverWasLanded"
                         />
                         <span
                           *ngIf="!locationForm.get('longitude').valid && locationForm.get('longitude').touched"
@@ -109,13 +182,13 @@
                       <img src="../assets/iconfinder_Space_mars_rover_6622866.png" height="25px"> !</span>
                   </span>
                   </div>
-                </div>
+                </div> -->
                 <button
+                  mat-raised-button
+                  color="primary"
                   [disabled]="!locationForm.valid"
-                  class="btn btn-default"
                   type="submit"
-
-                  >START {{locationForm.valid}}</button>
+                  >START</button>
               </form>
             </div>
           </div>
@@ -139,5 +212,5 @@
 
 </div>
 
-
+<pre>{{ actualPosition | json }}</pre>
 

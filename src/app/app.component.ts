@@ -13,6 +13,7 @@ import { amIOutsideSquare, getPointer, moveRoverForward, nextStepIsAvailable } f
 })
 export class AppComponent implements OnInit{
 
+  roverWasLanded = false;
   locationForm: FormGroup;
 
   //roverService
@@ -63,7 +64,7 @@ export class AppComponent implements OnInit{
       width: new FormControl(9, Validators.required),
       command: new FormControl('A', [Validators.required, this.forbiddenCommands]),
       latitude: new FormControl(4, Validators.required),
-      longitude: new FormControl(4, Validators.required),
+      longitude: new FormControl(0, Validators.required),
       orientation: new FormControl('N', Validators.required),
     })
   }
@@ -87,15 +88,17 @@ export class AppComponent implements OnInit{
   handleClick = () => {
     if(this.locationForm.valid) {
 
-      this.inputLocation = {
-        height: this.locationForm.get('height').value as number,
-        width: this.locationForm.get('width').value as number,
-        orientation: this.locationForm.get('orientation').value as Orientation,
-        location: {
-          latitude: this.locationForm.get('latitude').value as number,
-          longitude: this.locationForm.get('longitude').value as number,
-        }
-      };
+      if (!this.roverWasLanded) {
+        this.inputLocation = {
+          height: this.locationForm.get('height').value as number,
+          width: this.locationForm.get('width').value as number,
+          orientation: this.locationForm.get('orientation').value as Orientation,
+          location: {
+            latitude: this.locationForm.get('latitude').value as number,
+            longitude: this.locationForm.get('longitude').value as number,
+          }
+        };
+      }
 
       this.command = this.locationForm.get('command').value as string;
 
@@ -126,19 +129,25 @@ export class AppComponent implements OnInit{
             case 'A':
               !amIOutsideSquare(this.rover, this.inputLocation)
               ?
-              (nextStepIsAvailable(this.rover, this.inputLocation, ) ?
-              this.rover.position = moveRoverForward(rover.position) :
-              this.rover.warnings.push(`${new Date()}`)
+
+              (nextStepIsAvailable(this.rover, this.inputLocation) ?
+              (console.log('A.1.1 NEXTSTEP', this.rover.position.coordinates.latitude),
+              this.rover.position = moveRoverForward(rover.position))
+              :
+              console.log('A.1.2 NO CANT MOVE !!! ')
               )
-              : this.rover.position = rover.position;
+
+              : console.log('A.2 NO NEXT STEP 2');
               break;
+
             default:
+              console.log('--- B OUT A')
               this.rover.position.pointer = getPointer(rover.position.pointer, item);
+              console.log('new pointer: ', this.rover.position.pointer)
               break;
           }
 
           if (amIOutsideSquare(this.rover, this.inputLocation)) {
-            console.log('error?')
             this.rover.warnings.push(`Crashed :( on: [${command}] command, at: ${new Date()}`)
             throw new Error('Rover, dare might things!');
           }
@@ -159,6 +168,8 @@ export class AppComponent implements OnInit{
   finished = (rover: Rover, isInSquare: boolean) => {
     this.worldService.setWorldSize(this.inputLocation);
     this.roverService.setRoverPosition(rover);
+
+    this.roverWasLanded = true;
 
     this.emptyForm();
     this.actualPosition.push(
