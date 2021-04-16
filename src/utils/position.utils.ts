@@ -1,5 +1,6 @@
 import { Position, Rover } from '../models/electronics';
 import { Orientation, World, Location } from '../models/places';
+
 export const moveRoverForward = (
   position: Position
   ): Position => {
@@ -51,23 +52,19 @@ export const moveRoverForward = (
 
     return false;
   }
+
   export const nextStepIsAvailable = (rover: Rover, inputLocation: World): boolean => {
-    console.log(rover.position.coordinates.latitude, inputLocation.height);
     switch (rover.position.pointer) {
       case 'N':
-        if (rover.position.coordinates.latitude - 1 === 0) return false;
-        break;
-      case 'S':
-        if (rover.position.coordinates.latitude + 2 === inputLocation.height) return false;
-        break;
-      case 'E':
-        if (rover.position.coordinates.longitude + 2 >= inputLocation.width) return false;
-        break;
+        return (rover.position.coordinates.latitude > 0)
       case 'W':
-        if (rover.position.coordinates.longitude - 1 === 0) return false;
-        break;
+        return (rover.position.coordinates.longitude > 0)
+      case 'S':
+        return (rover.position.coordinates.latitude < inputLocation.height - 1)
+      case 'E':
+        return (rover.position.coordinates.longitude < inputLocation.width - 1)
+      default:
+        return false;
     }
-
-    return true;
   }
 
