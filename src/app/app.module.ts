@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 import { MapComponent } from './map/map.component';
 
@@ -33,6 +34,7 @@ import { MapComponent } from './map/map.component';
     MatSelectModule,
     FlexLayoutModule,
     MatCardModule,
+    MatButtonModule,
   ],
   providers: [
     RoverPositionService,

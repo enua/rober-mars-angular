@@ -60,7 +60,7 @@ export class MapComponent implements OnInit {
         border = 'left';
         break;
     }
-    console.log(border)
+
     return {[`border-${border}`]: '1px solid red'};
   }
 }
