@@ -1,0 +1,33 @@
+<section>
+  <div class="example-button-row">
+    <div class="example-flex-container">
+      <div class="example-button-container">
+        <button
+          (click)="handleChangePointer('L')"
+          mat-fab color="primary"
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>undo</mat-icon>
+        </button>
+      </div>
+      <div class="example-button-container">
+        <button
+          (click)="handleMoveForward()"
+          mat-fab color="primary"
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>expand_less</mat-icon>
+        </button>
+      </div>
+      <div class="example-button-container">
+        <button
+          (click)="handleChangePointer('R')"
+          mat-fab color="primary"
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>redo</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
