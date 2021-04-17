@@ -16,13 +16,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
 import { MapComponent } from './map/map.component';
+import { KeyboardComponent } from './keyboard/keyboard.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
-    MapComponent
+    MapComponent,
+    KeyboardComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +39,8 @@ import { MapComponent } from './map/map.component';
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
   ],
   providers: [
     RoverPositionService,
