@@ -1,9 +1,13 @@
+/* HEADER */
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 /* forms */
  /* .content {
   background: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url('../assets/PinClipart.com_mars-rover-clipart_906532.png') no-repeat;
   background-size: 600px;
 } */
-
 .form {
   padding: 10px;
 }

@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MapComponent } from './map/map.component';
 import { KeyboardComponent } from './keyboard/keyboard.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatToolbarModule,
   ],
   providers: [
     RoverPositionService,
