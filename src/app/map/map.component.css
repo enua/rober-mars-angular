@@ -9,8 +9,10 @@ table {
 
 .spacer {
   padding: 10px;
+  color: #ccc;
 }
 
 .rover_is_here {
-  background-color: chartreuse;
+  background: url('../../assets/rover_01.png') chartreuse no-repeat center;
+  background-size: 30px;
 }
