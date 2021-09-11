@@ -13,7 +13,7 @@ NodeJs 12 is needed to run the server in development mode;
 Also you can run the tests with `npm run test`.
 
 ## Live demo
-You can also see a [demo working](https://strin.es/)
+You can also see a [demo working](https://perlaweb.es/)
 
 ## Why this app exists
 
